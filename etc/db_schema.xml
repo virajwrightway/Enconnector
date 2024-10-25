@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <table name="sales_order" resource="default" engine="innodb" comment="Sales Order">
+        <column xsi:type="int" name="eposnow_id" nullable="true" comment="Epos Now Id"/>
+    </table>
+
+    <table name="eposnow_configuration" resource="default" engine="innodb" comment="Epos Now Configuration">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" auto_increment="true" primary="true"/>
+        <column xsi:type="int" name="eposnow_store_location" nullable="true" default="0" comment="Epos Now Store Location"/>
+        <column xsi:type="boolean" name="sync_stock" nullable="true" default="0" comment="Sync Stock"/>
+        <column xsi:type="boolean" name="sync_products" nullable="true" default="0" comment="Sync Products"/>
+        <column xsi:type="boolean" name="sync_title" nullable="true" default="0" comment="Sync Product title on update"/>
+        <column xsi:type="boolean" name="sync_desc" nullable="true" default="0" comment="Sync Product description on update"/>
+        <column xsi:type="boolean" name="desc_type" nullable="true" default="0" comment="Product Description type"/>
+        <column xsi:type="boolean" name="sync_categories" nullable="true" default="0" comment="Sync Categories"/>
+        <column xsi:type="boolean" name="sync_cattitle" nullable="true" default="0" comment="Sync Category Title on update"/>
+        <column xsi:type="boolean" name="sync_catdesc" nullable="true" default="0" comment="Sync Category Description on update"/>
+        <column xsi:type="boolean" name="sync_price" nullable="true" default="0" comment="Sync Price on update"/>
+        <column xsi:type="boolean" name="sync_orders" nullable="true" default="0" comment="Sync Orders"/>
+        <column xsi:type="boolean" name="sync_orderstoEposnow" nullable="true" default="0" comment="Sync Orders to eposnow"/>
+        <column xsi:type="boolean" name="sync_orderstoMagento" nullable="true" default="0" comment="Sync Orders to Magento"/>
+        <column xsi:type="text" name="sync_direction" nullable="true" length="255" default="0" comment="Sync Direction"/>
+        <column xsi:type="int" name="default_eposnow_tax_class" nullable="true" default="0" comment="Default eposnow Tax Class"/>
+        <column xsi:type="int" name="default_magento_tax_class" nullable="true" default="0" comment="Default Magento Tax Class"/>
+        <column xsi:type="int" name="en_variantGrp_status" nullable="true" default="0" comment="En variant Group Finished"/>
+        <column xsi:type="boolean" name="eposnow_validated" nullable="true" default="0" comment="Validate eposnow key and secret"/>
+        <column xsi:type="int" name="default_tender" nullable="true" default="0" comment="Default Tender Type"/>
+        <column xsi:type="int" name="sync_type" nullable="true" length="128" default="0" comment="Epos category count"/>
+        <column xsi:type="int" name="loop_timeout" nullable="true" length="128" default="55" comment="Epos category count"/>
+        <column xsi:type="boolean" name="should_cron" nullable="false" default="0" comment="is cron allowed"/>
+        <column xsi:type="boolean" name="api_locked" nullable="false" default="0" comment="api limit reached"/>
+        <column xsi:type="boolean" name="is_cron" nullable="false" default="0" comment="is cron running"/>
+        <column xsi:type="boolean" name="is_ajax" nullable="false" default="0" comment="is cron running"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="eposnow_taxmatch" resource="default" engine="innodb" comment="Epos Now Tax Match">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" auto_increment="true" primary="true" comment="Magento Api Key"/>
+        <column xsi:type="int" name="magento_tax_id" comment="Magento Tax ID"/>
+        <column xsi:type="int" name="eposnow_tax_id" comment="Eposnow_tax_id"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="eposnow_eposnowcolours" resource="default" engine="innodb" comment="Epos Now Colours">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" auto_increment="true" primary="true" comment="Id"/>
+        <column xsi:type="int" name="eposnow_id" comment="eposnow Colour ID"/>
+        <column xsi:type="text" name="colour_code" length="255" comment="eposnow Colour Code"/>
+        <column xsi:type="text" name="name" length="255" comment="eposnow Name"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="eposnow_eposdata" resource="default" engine="innodb" comment="Epos Now Data">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" auto_increment="true" primary="true" comment="Id"/>
+        <column xsi:type="int" name="entity_id" comment="Epos ID"/>
+        <column xsi:type="text" name="entity_type" length="8" comment="Type"/>
+        <column xsi:type="text" name="data" length="500" comment="Epos Data"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="eposnow_license" resource="default" engine="innodb" comment="Epos Now License">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" auto_increment="true" primary="true" comment="Id"/>
+        <column xsi:type="text" name="license_key" length="128" comment="EposNow connection token"/>
+        <column xsi:type="text" name="eposnow_token" length="128" comment="EposNow connection token"/>
+        <column xsi:type="text" name="domain" length="128" comment="Type"/>
+        <column xsi:type="decimal" name="app_version" scale="8" precision="8" comment="Module Version"/>
+        <column xsi:type="text" name="hash" length="500" comment="hash of data"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+
+    <table name="eposnow_syncprocess" resource="default" engine="innodb" comment="Epos Now Sync Process">
+        <column xsi:type="int" name="id" unsigned="true" nullable="false" identity="true" auto_increment="true" primary="true" comment="Id"/>
+        <column xsi:type="text" name="type" length="8" comment="Item Type"/>
+        <column xsi:type="int" name="total_count" length="128" comment="Total Count"/>
+        <column xsi:type="int" name="synced_count" length="128" comment="Type"/>
+        <column xsi:type="int" name="last_page" length="128" comment="last Synced Page"/>
+        <column xsi:type="int" name="last_id" length="128" comment="Last Synced Id"/>
+        <column xsi:type="int" name="status" length="128" comment="Synced Status"/>
+        <column xsi:type="int" name="priority" length="128" comment="Sync priority"/>
+        <column xsi:type="int" name="last_fetched" length="128" comment="Last Page Fetched"/>
+        <column xsi:type="text" name="direction" length="128" comment="Sync Direction"/>
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="id"/>
+        </constraint>
+    </table>
+</schema>

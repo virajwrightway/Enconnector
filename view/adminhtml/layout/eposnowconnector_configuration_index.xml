@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <head>
+<!--        <css src="Eposnow_eposnow::css/jquery-ui.css"/>-->
+<!--        <script src="Eposnow_eposnow::js/jquery-ui.js"/>-->
+        <title>
+            EposNow Configuration
+        </title>
+    </head>
+    <body>
+        <referenceContainer name="content">
+            <block class="Wrightwaydigital\Enconnector\Block\Configuration" name="main"
+                   template="Wrightwaydigital_Enconnector::configuration.phtml"/>
+        </referenceContainer>
+        <referenceBlock name="main">
+            <block class="Wrightwaydigital\Enconnector\Block\Configuration" name="sync"
+                   template="Wrightwaydigital_Enconnector::sync.phtml"/>
+            <block class="Wrightwaydigital\Enconnector\Block\Configuration" name="match"
+                   template="Wrightwaydigital_Enconnector::match.phtml"/>
+            <block class="Wrightwaydigital\Enconnector\Block\Configuration" name="tax"
+                   template="Wrightwaydigital_Enconnector::tax.phtml"/>
+            <block class="Wrightwaydigital\Enconnector\Block\Configuration" name="default"
+                   template="Wrightwaydigital_Enconnector::default.phtml"/>
+        </referenceBlock>
+    </body>
+</page>

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="eposnow_checkout_submit_all_after" instance="Wrightwaydigital\Enconnector\Observer\OrderSubmitObserver"/>
+    </event>
+    <event name="order_cancel_after">
+        <observer name="eposnow_order_cancel_after" instance="Wrightwaydigital\Enconnector\Observer\OrderCancelObserver"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="eposnow_sales_order_place_after" instance="Wrightwaydigital\Enconnector\Observer\OrderPlaceObserver"/>
+    </event>
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="eposnow_cataloginventory_stock_item_save_after"
+                  instance="Wrightwaydigital\Enconnector\Observer\StockSaveObserver"/>
+    </event>
+    <event name="adminhtml_customer_save_after">
+        <observer name="eposnow_customer_save" instance="Wrightwaydigital\Enconnector\Observer\CustomerSaveObserver"/>
+    </event>
+</config>

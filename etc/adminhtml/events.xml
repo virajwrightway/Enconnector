@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="checkout_submit_all_after">
+        <observer name="eposnow_checkout_submit_all_after" instance="Wrightwaydigital\Enconnector\Observer\OrderSubmitObserver"/>
+    </event>
+    <event name="order_cancel_after">
+        <observer name="eposnow_order_cancel_after" instance="Wrightwaydigital\Enconnector\Observer\OrderCancelObserver"/>
+    </event>
+    <event name="sales_order_save_after">
+        <observer name="eposnow_sales_order_place_after" instance="Wrightwaydigital\Enconnector\Observer\OrderPlaceObserver"/>
+    </event>
+    <event name="cataloginventory_stock_item_save_after">
+        <observer name="eposnow_cataloginventory_stock_item_save_after"
+                  instance="Wrightwaydigital\Enconnector\Observer\StockSaveObserver"/>
+    </event>
+    <event name="catalog_controller_category_delete">
+        <observer name="eposnow_catalog_controller_category_delete"
+                  instance="Wrightwaydigital\Enconnector\Observer\CategoryDeleteObserver"/>
+    </event>
+    <event name="catalog_category_prepare_save">
+
+        <observer name="eposnow_catalog_category_prepare_save"
+                  instance="Wrightwaydigital\Enconnector\Observer\CategorySaveObserver"/>
+    </event>
+    <event name="category_move">
+        <observer name="eposnow_category_move" instance="Wrightwaydigital\Enconnector\Observer\CategoryMoveObserver"/>
+    </event>
+<!--    <event name="catalog_product_save_before">-->
+<!--        <observer name="eposnow_product_prepare_save" instance="Wrightwaydigital\Enconnector\Observer\ProductSaveObserver"/>-->
+<!--    </event>-->
+    <event name="catalog_product_save_after">
+        <observer name="eposnow_product_save_after" instance="Wrightwaydigital\Enconnector\Observer\ProductSaveAfterObserver"/>
+    </event>
+<!--    <event name="controller_action_catalog_product_save_entity_after">-->
+<!--        <observer name="eposnow_product_save_commit_after"-->
+<!--                  instance="Wrightwaydigital\Enconnector\Observer\ProductSaveCommitAfterObserver"/>-->
+<!--    </event>-->
+    <event name="catalog_product_delete_before">
+        <observer name="eposnow_product_delete" instance="Wrightwaydigital\Enconnector\Observer\ProductDeleteObserver"/>
+    </event>
+    <event name="adminhtml_customer_save_after">
+        <observer name="eposnow_customer_save" instance="Wrightwaydigital\Enconnector\Observer\CustomerSaveObserver"/>
+    </event>
+</config>

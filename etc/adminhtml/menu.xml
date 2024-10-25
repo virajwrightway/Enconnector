@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Wrightwaydigital_Enconnector::eposnowconnector" title="Epos Now" module="Wrightwaydigital_Enconnector" parent="Magento_Backend::system"
+             sortOrder="50" dependsOnModule="Wrightwaydigital_Enconnector" resource="Wrightwaydigital_Enconnector::eposnowconnector"/>
+        <add id="Wrightwaydigital_Enconnector::eposnow_configuration" title="Configuration" module="Wrightwaydigital_Enconnector"
+             parent="Wrightwaydigital_Enconnector::eposnowconnector" sortOrder="10" dependsOnModule="Wrightwaydigital_Enconnector"
+             action="eposnowconnector/configuration" resource="Wrightwaydigital_Enconnector::eposnowconnector"/>
+<!--        <add id="Eposnow_eposnow::eposnow_configure" title="Configure" module="Eposnow_eposnow"-->
+<!--             parent="Eposnow_eposnow::eposnow" sortOrder="10" dependsOnModule="Eposnow_eposnow"-->
+<!--             action="eposnow/configure" resource="Eposnow_eposnow::eposnow"/>-->
+    </menu>
+</config>

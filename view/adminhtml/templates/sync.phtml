@@ -1,0 +1,311 @@
+<?php
+/**
+ * @var Configuration $block
+ */
+
+use Wrightwaydigital\Enconnector\Block\Configuration;
+
+$model = $block->getConfiguration();
+$license = $block->getLicense();
+$runUrl = $block->getRunUrl();
+$version = '1.1';
+$sync_directions = ['eposnow' => 'Sync to EposNow', 'magento' => 'Sync to Magento'];
+$desc_types = ['1' => 'Long Description', '2' => 'Short Description'];
+$sync_direction = $model->getSyncDirection();
+if ($sync_direction == 'eposnow') {
+    $to = 'Eposnow';
+    $from = 'Magento';
+} else {
+    $to = 'Magento';
+    $from = 'Eposnow';
+}
+?>
+
+<style>
+    .collapsible {
+        background-color: #e3e3e3;
+        color: black;
+        cursor: pointer;
+        padding: 18px;
+        width: 50%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+    .active, .collapsible:hover {
+        background-color: #e3e3e3b8;
+    }
+
+    .collapsible:after {
+        content: '\002B';
+        color: white;
+        font-weight: bold;
+        float: right;
+        margin-left: 5px;
+    }
+
+    .active:after {
+        content: "\2212";
+    }
+
+    .content {
+        padding: 0 18px;
+        max-height: 0;
+        width: 50%;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        background-color: #f1f1f1;
+    }
+</style>
+
+<div class="admin__field" style="margin-bottom: 20px">
+    <label class="admin__field-label">Sync Direction</label>
+    <div class="admin__field-control">
+        <select class="admin__control-select sync_direction"
+                value="<?php echo $block->getEscaper()->escapeHtmlAttr($model->getSyncDirection()) ?>"
+                name="syncDirection">
+            <?php foreach ($sync_directions as $key => $value) {
+                $selected = ($model->getSyncDirection() == $key)
+                    ? 'selected="selected"' : '';
+                echo '<option ' . $block->getEscaper()->escapeHtmlAttr($selected) . '  value="' . $block->getEscaper()->escapeHtmlAttr($key) . '">' . $block->getEscaper()->escapeHtmlAttr($value) . '</option>';
+            }
+            ?>
+        </select>
+    </div>
+</div>
+
+
+<button type="button" class="collapsible">Category Sync</button>
+<div class="content">
+    <div class="admin__field">
+        <!--        <h2>Category Sync Settings</h2>-->
+
+        <label class="admin__field-label" for="Categories">
+            <span>Sync Categories</span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncCategories" value="0"><input type="checkbox"
+                                                                            class="admin__actions-switch-checkbox"
+                                                                            value="1"
+                                                                            name="SyncCategories"
+                                                                            id="Categories" <?php if ($model->getSyncCategories()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="Categories">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="admin__field syncCategoryChild">
+        <label class="admin__field-label" for="SyncCatTitles">
+            <span>Update <?php echo $block->getEscaper()->escapeHtmlAttr($to) ?> Category Titles  when categories update on <?php echo $block->getEscaper()->escapeHtmlAttr($from) ?></span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncCatTitle" value="0"><input type="checkbox"
+                                                                          class="admin__actions-switch-checkbox"
+                                                                          value="1"
+                                                                          name="SyncCatTitle"
+                                                                          id="SyncCatTitles" <?php if ($model->getSyncCattitle()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="SyncCatTitles">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="admin__field syncCategoryChild">
+        <label class="admin__field-label" for="syncCatDesc">
+            <span>Update <?php echo $block->getEscaper()->escapeHtmlAttr($to) ?> Category Descriptions  when categories update on <?php echo $block->getEscaper()->escapeHtmlAttr($from) ?></span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncCatDesc" value="0"><input type="checkbox"
+                                                                         class="admin__actions-switch-checkbox"
+                                                                         value="1"
+                                                                         name="SyncCatDesc"
+                                                                         id="SyncCatDesc" <?php if ($model->getSyncCatdesc()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="SyncCatDesc">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+<button type="button" class="collapsible">Product Sync</button>
+<div class="content">
+    <div class="admin__field">
+        <!--        <h2>Product Sync Settings</h2>-->
+
+        <label class="admin__field-label" for="Products">
+            <span>Sync Products</span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncProducts" value="0"><input type="checkbox"
+                                                                          class="admin__actions-switch-checkbox"
+                                                                          value="1"
+                                                                          name="SyncProducts"
+                                                                          id="Products" <?php if ($model->getSyncProducts()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="Products">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="admin__field syncProductChild">
+        <label class="admin__field-label" for="syncTitles">
+            <span>Update <?php echo $block->getEscaper()->escapeHtmlAttr($to) ?> Product Titles  when Products update on <?php echo $block->getEscaper()->escapeHtmlAttr($from) ?></span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncTitle" value="0"><input type="checkbox"
+                                                                       class="admin__actions-switch-checkbox"
+                                                                       value="1"
+                                                                       name="SyncTitle"
+                                                                       id="syncTitles" <?php if ($model->getSyncTitle()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="syncTitles">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="admin__field syncProductChild">
+        <label class="admin__field-label" for="SyncDesc">
+            <span>Update <?php echo $block->getEscaper()->escapeHtmlAttr($to) ?> Product Description  when Products update on <?php echo $block->getEscaper()->escapeHtmlAttr($from) ?></span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncDesc" value="0"><input type="checkbox"
+                                                                      class="admin__actions-switch-checkbox"
+                                                                      value="1"
+                                                                      name="SyncDesc"
+                                                                      id="SyncDesc" <?php if ($model->getSyncDesc()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="SyncDesc">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="admin__field syncProductChild">
+        <label class="admin__field-label">Sync EposNow Prdoduct Description to Magento product field</label>
+        <div class="admin__field-control">
+            <select class="admin__control-select desc_type"
+                    value="<?php echo $block->getEscaper()->escapeHtmlAttr($model->getDescType()) ?>"
+                    name="descType">
+                <?php foreach ($desc_types as $key => $value) {
+                    $selected = ($model->getDescType() == $key)
+                        ? 'selected="selected"' : '';
+                    echo '<option ' . $block->getEscaper()->escapeHtmlAttr($selected) . '  value="' . $block->getEscaper()->escapeHtmlAttr($key) . '">' . $block->getEscaper()->escapeHtmlAttr($value) . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="admin__field syncProductChild">
+        <label class="admin__field-label" for="SyncPrice">
+            <span>Update <?php echo $block->getEscaper()->escapeHtmlAttr($to) ?> Product Prices  when prices update on <?php echo $block->getEscaper()->escapeHtmlAttr($from) ?></span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncPrice" value="0"><input type="checkbox"
+                                                                       class="admin__actions-switch-checkbox"
+                                                                       value="1"
+                                                                       name="SyncPrice"
+                                                                       id="SyncPrice" <?php if ($model->getSyncPrice()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="SyncPrice">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+<button  type="button" class="collapsible">Others Sync Settings</button>
+<div class="content">
+
+    <div class="admin__field">
+        <!--        <h2>Other Sync Settings</h2>-->
+
+        <label class="admin__field-label" for="Stock">
+            <span>Sync Stock</span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncStock" value="0"><input type="checkbox"
+                                                                       class="admin__actions-switch-checkbox"
+                                                                       value="1" name="SyncStock"
+                                                                       id="Stock" <?php if ($model->getSyncStock()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="Stock">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="admin__field">
+        <label class="admin__field-label" for="Orders">
+            <span>Sync Orders</span>
+        </label>
+        <div class="admin__field-control">
+            <div class="admin__actions-switch" data-role="switcher">
+                <input type="hidden" name="SyncOrders" value="0"><input type="checkbox"
+                                                                        class="admin__actions-switch-checkbox"
+                                                                        value="1" name="SyncOrders"
+                                                                        id="Orders" <?php if ($model->getSyncOrders()) {
+                    echo "checked";
+                } ?>>
+                <label class="admin__actions-switch-label" for="Orders">
+                                        <span class="admin__actions-switch-text" data-text-on="Yes"
+                                              data-text-off="No"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + "px";
+            }
+        });
+    }
+    require(["jquery"], function () {
+        jQuery(".sync_direction").change(function () {
+            jQuery('#save').click(); // Submit the form
+        });
+    });
+</script>

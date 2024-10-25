@@ -1,0 +1,599 @@
+<?php
+/**
+ * @var Configuration $block
+ */
+
+use Wrightwaydigital\Enconnector\Block\Configuration;
+
+$model = $block->getConfiguration();
+$license = $block->getLicense();
+$runUrl = $block->getRunUrl();
+//$locations = $block->getLocations();
+$tenders = $block->getTenders();
+$eposTaxRates = $block->getEposnowTaxRates();
+$magentoTaxClasses = $block->getMagentoTaxClasses();
+$matchedTaxes = $block->getMatchedTaxes();
+$version = '1.1';
+$sync_directions = ['eposnow' => 'Sync to EposNow', 'magento' => 'Sync to Magento'];
+$desc_types = ['1' => 'Long Description', '2' => 'Short Description'];
+$ajaxUrl = $block->getUrl('eposnowconnector/configuration/SyncItems/');
+$validateUrl = $block->getUrl('eposnowconnector/configuration/');
+$syncProcessUrl = $block->getUrl('eposnowconnector/configuration/Syncprocess/');
+$phpTimeout = ini_get('max_execution_time');
+$lastSync = $block->configurationService->resumeSync($model->getSyncDirection());
+$saveDisabled = '';
+?>
+<style>
+    ..popup-loading {
+        background: none !important;
+    }
+
+    .ui-progressbar-value {
+        background: green !important;
+        height: 100% !important;
+    }
+
+    .progressbar {
+        height: 20px !important;
+        background: #0080001c;
+        margin-bottom: 5px;
+    }
+
+    table {
+        width: 50%;
+        border-collapse: collapse;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    select {
+        width: 100%;
+    }
+
+    #validate {
+        float: right;
+    }
+
+    <?php if (!$model->getSyncOrders()) {?>
+    .syncOrdersTo {
+        display: none;
+    }
+
+    <?php }
+         ?>
+
+    <?php if (!$model->getSyncCategories()) {?>
+    .syncCategoryChild {
+        display: none;
+    }
+
+    <?php }
+         ?>
+
+    <?php if (!$model->getSyncProducts()) {?>
+    .syncProductChild {
+        display: none;
+    }
+
+    <?php }
+         ?>
+</style>
+
+
+<div class="page-main-actions">
+    <div class="page-actions-placeholder">
+        <div class="page-actions" data-ui-id="page-actions-toolbar-content-header">
+            <div class="page-actions-inner" data-title="Veronica Costello">
+                <div class="page-actions-buttons">
+                    <button id="back" title="Back" type="button" class="action- scalable back"
+                            onclick="window.history.back();" data-ui-id="back-button">
+                        <span>Back</span>
+                    </button>
+
+                    <?php
+                    if ($block->getLicenseStatus() == 1) {
+                        if (isset($lastSync['status']) && ($lastSync['status'] == 1)) {
+                            ?>
+
+                            <button id="run" title="Run Sync"
+                                    class="scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                    onclick="runSync('resync')">
+                                Resync
+                            </button>
+
+                        <?php } else {
+                            ?>
+
+                            <?php
+                            if ($model->getData('is_cron') == 1) {
+                                $saveDisabled = 'Disabled';
+                                ?>
+                                <button title="Show sync pogress"
+                                        class="scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                        onclick='getSyncPogress()'> Show Sync Pogress
+                                </button>
+                            <?php } else {
+                                ?>
+                                <button id="run" title="Run Sync"
+                                        class="scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                        onclick="runSync('sync')">
+                                    Sync
+                                </button>
+                            <?php }
+                        } ?>
+                        <button id="save" <?php echo $block->getEscaper()->escapeHtmlAttr($saveDisabled) ?> title="Save Configuration" name="submit"
+                                type="submit"
+                                form="updateConfig"
+                                class="action- scalable save primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                                data-form-role="save" data-ui-id="save-button" aria-disabled="false">
+                        <span class="ui-button-text">
+                            <span>Save Configuration</span>
+                        </span>
+                        </button>
+                    <?php } ?>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<?php
+if ($block->getLicenseStatus() == 0) {
+    ?>
+    <fieldset class="admin__fieldset">
+        <div class="admin__field">
+            <label class="admin__field-label">License Key</label>
+            <div class="admin__field-control" style="width: calc((100%)* .5 - -189px);">
+                <input class="admin__control-text license_key" type="text" name="LicenseKey" style="width: 89%"
+                       value="<?php echo $block->getEscaper()->escapeHtmlAttr($license->getLicenseKey()) ?>">
+                <button title="Validate License"
+                        class="scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only"
+                        onclick='validateKeys()'>
+                    Validate
+                </button>
+                <small>Please install the Magento app from the EposNow app store, Click <a target="_blank"
+                                                                                           href="https://appstore.eposnow.com/s/app?appId=1636&name=Magento">Here</a>.
+                    Then follow the instructions there to complete the integration.</small>
+            </div>
+
+        </div>
+    </fieldset>
+<?php } else { ?>
+    <form method="get" id="updateConfig">
+
+        <div id="tab_element">
+            <ul class="tabs-horiz">
+                <li>
+                    <a href="#tab2_sync">
+                <span>
+                    <?php echo __("Sync"); ?>
+                </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab_defaults">
+                <span>
+                    <?php echo __("Defaults"); ?>
+                </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab2_match">
+                <span>
+                    <?php echo __("Match"); ?>
+                </span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab2_additional">
+                <span>
+                    <?php echo __("Advanced"); ?>
+                </span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div id="tab_element_content">
+
+            <div id="tab2_sync">
+                <?php echo $this->getChildHtml('sync', true); ?>
+
+            </div>
+            <div id="tab_defaults">
+                <?php echo $this->getChildHtml('default', true); ?>
+            </div>
+            <div id="tab2_match">
+                <?php echo $this->getChildHtml('match', true); ?>
+            </div>
+            <div id="tab2_additional">
+                <fieldset class="admin__fieldset">
+
+                    <div class="admin__field">
+                        <label class="admin__field-label">Loop Timeout (Max <?php echo $block->getEscaper()->escapeHtmlAttr($phpTimeout) ?>) seconds</label>
+                        <div class="admin__field-control">
+                            <input class="admin__control-text license_key" type="Number" max="<?php echo $block->getEscaper()->escapeHtmlAttr($phpTimeout) ?>) ?>"
+                                   name="LoopTimeout"
+                                   value="<?php echo $block->getEscaper()->escapeHtmlAttr($model->getLoopTimeout()) ?>">
+                        </div>
+                    </div>
+                    <?php
+                    if ($block->getLicenseStatus()) {
+                        ?>
+                        <div class="admin__field">
+
+                            <label class="admin__field-label">Reset License</label>
+                            <div class="admin__field-control" style="width: calc((100%)* .5 - -189px);">
+                                <button id="reset" title="Reset Keys"
+                                        class="scalable primary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only">
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+
+                    <?php }
+                    ?>
+                </fieldset>
+            </div>
+        </div>
+
+        <br/>
+    </form>
+<?php } ?>
+<div id="modal-content">
+    <div class="modal-inner-content">
+        <div class="syncCategoryChild">
+            <div class="progressbar" id="categoryProgressbar"></div>
+            <h4 class="syncCategoryChild"><span id="categorySyncCount">0</span> categories synced
+                to <?php echo $block->getEscaper()->escapeHtmlAttr($model->getSyncDirection()) ?></h4>
+        </div>
+        <div class="syncProductChild">
+            <div class="progressbar" id="productProgressbar"></div>
+            <h4 class="syncProductChild"><span id="productSyncCount">0</span> products synced
+                to <?php echo $block->getEscaper()->escapeHtmlAttr($model->getSyncDirection()) ?></h4>
+        </div>
+        <div class="syncStockChild">
+            <div class="progressbar" id="stockProgressbar"></div>
+            <h4 class="syncStockChild"><span id="stockSyncCount">0</span> stocks synced
+                to <?php echo $block->getEscaper()->escapeHtmlAttr( $model->getSyncDirection()) ?></h4>
+        </div>
+        <div class="syncOrderChild">
+            <div class="progressbar" id="orderProgressbar"></div>
+            <h4 class="syncOrderChild"><span id="orderSyncCount">0</span> orders synced
+                to <?php echo$block->getEscaper()->escapeHtmlAttr($model->getSyncDirection()) ?></h4>
+        </div>
+        <div class="syncInfo">
+            <h4><span id="syncInfo" style="color: red"></span></h4>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    require(["jquery-ui-modules/progressbar"], function ($) {
+        jQuery("#productProgressbar").progressbar({
+            value: 0
+        });
+        jQuery("#categoryProgressbar").progressbar({
+            value: 0
+        });
+    });
+    var interval = null;
+    require(
+        [
+            'jquery',
+            'Magento_Ui/js/modal/modal'
+        ],
+        function ($, modal) {
+            var options = {
+                type: 'popup',
+                responsive: true,
+                innerScroll: true,
+                title: 'Sync Progress',
+                buttons: [{
+                    text: $.mage.__('Close'),
+                    class: 'modal-close',
+                    click: function () {
+                        this.closeModal();
+                    }
+                }]
+            };
+            modal(options, $('#modal-content'));
+            $("#modal-btn").on('click', function () {
+                $("#modal-content").modal("openModal");
+            });
+        }
+    );
+    var last_status = 0;
+    function runSync(method) {
+        jQuery("#progressbar").progressbar({
+            value: 0
+        });
+        jQuery("#modal-content").modal("openModal");
+        syncItems(method);
+    }
+    function cleanprocess() {
+        jQuery("#categoryProgressbar").progressbar({
+            value: 0
+        });
+        jQuery("#productProgressbar").progressbar({
+            value: 0
+        });
+        jQuery('#productSyncCount').text(0);
+        jQuery('#categorySyncCount').text(0);
+        jQuery('#categoryCount').text(0);
+        jQuery('#productCount').text(0);
+    }
+    function showSyncProcess(response) {
+        var catCount = 0;
+        var catSyncCount = 0;
+        if (jQuery("#Categories").is(":checked")) {
+            catCount += parseInt(response.syncProcess.category.total_count);
+            catSyncCount += parseInt(response.syncProcess.category.synced_count);
+            jQuery('#categorySyncCount').text(catSyncCount);
+            jQuery('#categoryCount').text(catCount);
+            categoryPercentage = (parseInt(catSyncCount) / parseInt(catCount)) * 100;
+            jQuery("#categoryProgressbar").progressbar({
+                value: categoryPercentage
+            });
+        }
+        var prodCount = 0;
+        var prodSyncCount = 0
+        if (jQuery("#Products").is(":checked")) {
+            prodCount += response.syncProcess.product.total_count;
+            prodSyncCount += response.syncProcess.product.synced_count;
+            console.log("product");
+            console.log(prodCount);
+            console.log(prodSyncCount);
+            jQuery('#productSyncCount').text(parseInt(prodSyncCount));
+            jQuery('#productCount').text(parseInt(prodCount));
+            productPercentage = (parseInt(prodSyncCount) / parseInt(prodCount)) * 100;
+            console.log(productPercentage);
+            jQuery("#productProgressbar").progressbar({
+                value: productPercentage
+            });
+        }
+        var stockCount = 0;
+        var stockSyncCount = 0
+        if (jQuery("#Stock").is(":checked")) {
+            stockCount += response.syncProcess.stock.total_count;
+            stockSyncCount += response.syncProcess.stock.synced_count;
+            console.log("product");
+            console.log(prodCount);
+            console.log(prodSyncCount);
+            jQuery('#stockSyncCount').text(parseInt(stockSyncCount));
+            jQuery('#stockCount').text(parseInt(stockCount));
+            stockPercentage = (parseInt(stockSyncCount) / parseInt(stockCount)) * 100;
+            console.log(stockPercentage);
+            jQuery("#stockProgressbar").progressbar({
+                value: stockPercentage
+            });
+        }
+        var orderCount = 0;
+        var orderSyncCount = 0
+        if (jQuery("#Order").is(":checked")) {
+            orderCount += response.syncProcess.order.total_count;
+            orderSyncCount += response.syncProcess.order.synced_count;
+            jQuery('#orderSyncCount').text(parseInt(orderSyncCount));
+            jQuery('#stockCount').text(parseInt(orderCount));
+            orderPercentage = (parseInt(orderSyncCount) / parseInt(orderCount)) * 100;
+            console.log(stockPercentage);
+            jQuery("#orderProgressbar").progressbar({
+                value: orderPercentage
+            });
+        }
+        return true;
+    }
+    function getSyncPogress() {
+        jQuery("#progressbar").progressbar({
+            value: 0
+        });
+        jQuery("#modal-content").modal("openModal");
+        var interval = setInterval(function () {
+            jQuery.ajax({
+                type: 'POST',
+                url: '<?php echo $syncProcessUrl;?>',
+                data: {form_key: window.FORM_KEY},
+                dataType: 'json',
+                success: function (response) {
+                    console.log(response);
+                    showSyncProcess(response);
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        }, 5000);
+    }
+    function validateKeys() {
+        var key = jQuery('.license_key').val();
+        if (key) {
+            jQuery.ajax({
+                type: 'POST',
+                url: '<?php echo $validateUrl;?>' + '/validateKeys/',
+                data: {form_key: window.FORM_KEY, validate: true, LicenseKey: key},
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status === true) {
+                        jQuery('body').loader('hide');
+                        location.reload();
+                    } else {
+                        jQuery('body').loader('hide');
+                        location.reload();
+                    }
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        } else {
+            showNotification('error', 'Connection key invalid or empty')
+        }
+    }
+    function showNotification(type, message) {
+        jQuery(".messages").html('');
+        var e = jQuery('<div id="messages"><div class="messages"><div class="message message-' + type + ' ' + type + '"><div data-ui-id="messages-message-' + type + '">' + message + '</div></div></div></div>');
+        jQuery("#anchor-content").prepend(e);
+    }
+    function syncItems(method) {
+        jQuery('body').loader('show');
+        jQuery.ajax({
+            type: 'POST',
+            url: '<?php echo $ajaxUrl;?>',
+            data: {form_key: window.FORM_KEY, method: method},
+            async: true,
+            dataType: 'json',
+            success: function (response) {
+                showSyncProcess(response);
+                if (response.status === false || response.status === 'done') {
+                    jQuery('body').loader('hide');
+                    return true;
+                } else if (response.status === 403) {
+                    jQuery('body').loader('hide');
+                    jQuery('#syncInfo').text("EposNow API limit has been reached. The synchronization will continue on the background once the API limit reset again in 1 hour");
+                } else {
+                    jQuery('body').loader('hide');
+                    last_status = response.result;
+                    syncItems('sync');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.log(xhr);
+                console.log(status);
+                console.log(error);
+                if (error === "Gateway Timeout") {
+                    window.setTimeout(function () {
+                        syncItems(method);
+                    }, 600);
+                } else {
+                    jQuery('body').loader('hide');
+                    return true;
+                }
+            }
+        });
+    }
+    require([
+        "jquery"
+    ], function ($) {
+        jQuery('.eposnow-select').change(function () {
+            var myOpt = [];
+            jQuery(".eposnow-select").each(function () {
+                myOpt.push($(this).val());
+            });
+            jQuery(".eposnow-select").each(function () {
+                jQuery(this).find("option").prop('hidden', false);
+                var sel = $(this);
+                jQuery.each(myOpt, function (key, value) {
+                    if ((value != "") && (value != sel.val())) {
+                        sel.find("option").filter('[value="' + value + '"]').prop('hidden', true);
+                    }
+                });
+            });
+        });
+    });
+    require([
+        "jquery"
+    ], function ($) {
+        jQuery(document).ready(function () {
+            $('.magento_default_tax').hide();
+            jQuery('.sync_direction').change(function () {
+                var selectedValue = jQuery(this).val();
+                if (selectedValue === 'eposnow') {
+                    $('.magento_default_tax').hide();
+                } else {
+                    $('.magento_default_tax').show();
+                }
+                if (selectedValue === 'magento') {
+                    $('.eposnow_default_tax').hide();
+                } else {
+                    $('.eposnow_default_tax').show();
+                }
+            });
+        });
+    });
+    require(["jquery", "mage/backend/tabs"], function ($) {
+        $(function () {
+            $('#tab_element').tabs({
+                active: 'tab1_content',
+                destination: '#tab_element_content',
+                shadowTabs: []
+            });
+        });
+    });
+    require([
+        "jquery"
+    ], function ($) {
+        jQuery('.eposnow-select').change(function () {
+            var myOpt = [];
+            jQuery(".eposnow-select").each(function () {
+                myOpt.push($(this).val());
+            });
+            jQuery(".eposnow-select").each(function () {
+                jQuery(this).find("option").prop('hidden', false);
+                var sel = $(this);
+                jQuery.each(myOpt, function (key, value) {
+                    if ((value != "") && (value != sel.val())) {
+                        sel.find("option").filter('[value="' + value + '"]').prop('hidden', true);
+                    }
+                });
+            });
+        });
+    });
+    require([
+        "jquery"
+    ], function ($) {
+        jQuery('#reset').click(function (e) {
+            event.preventDefault();
+            jQuery('body').loader('show');
+            jQuery.ajax({
+                type: 'POST',
+                url: '<?php echo $validateUrl;?>' + '/reset/',
+                data: {form_key: window.FORM_KEY, reset: true},
+                dataType: 'json',
+                success: function (response) {
+                    if (response.status == true) {
+                        jQuery('body').loader('hide');
+                        location.reload();
+                    } else {
+                        jQuery('body').loader('hide');
+                    }
+                },
+                error: function (xhr, status, error) {
+                }
+            });
+        });
+    });
+    require(["jquery"], function ($) {
+        $("#Orders").change(function () {
+            if ($("#Orders").is(":checked")) {
+                jQuery('.syncOrdersTo').show();
+            } else {
+                jQuery('.syncOrdersTo').hide();
+            }
+        });
+    });
+    require(["jquery"], function ($) {
+        $("#Categories").change(function () {
+            if ($("#Categories").is(":checked")) {
+                jQuery('.syncCategoryChild').show();
+            } else {
+                jQuery('.syncCategoryChild').hide();
+            }
+        });
+    });
+    require(["jquery"], function ($) {
+        $("#Products").change(function () {
+            if ($("#Products").is(":checked")) {
+                jQuery('.syncProductChild').show();
+            } else {
+                jQuery('.syncProductChild').hide();
+            }
+        });
+    });
+
+</script>

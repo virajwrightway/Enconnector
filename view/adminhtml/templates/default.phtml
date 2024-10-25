@@ -1,0 +1,88 @@
+<?php
+/**
+ * @var Configuration $block
+ */
+
+use Wrightwaydigital\Enconnector\Block\Configuration;
+
+$model = $block->getConfiguration();
+$locations = $block->getLocations();
+$tenders = $block->getTenders();
+$eposTaxRates = $block->getEposnowTaxRates();
+$magentoTaxClasses = $block->getMagentoTaxClasses();
+?>
+
+<fieldset class="admin__fieldset">
+    <div class="admin__field">
+        <label class="admin__field-label">EposNow Store Location</label>
+        <div class="admin__field-control">
+            <select class="admin__control-select"
+                    value="<?php echo $model->getEposnowStoreLocation() ?>"
+                    name="EposnowStoreLocation" <?php if ($locations == null) {
+                echo 'disabled';
+            } else {
+                echo '';
+            } ?>>
+                <?php if (!empty($locations) && is_array($locations)) foreach ($locations as $location) {
+                    $selected = ($model->getEposnowStoreLocation() == $location->Id)
+                        ? 'selected="selected"' : '';
+                    if (!empty($location->Id)) {
+                        echo '<option ' . $selected . '  value="' . $location->Id . '">' . $location->Name . '</option>';
+                    }
+                } ?>
+            </select>
+        </div>
+    </div>
+    <div class="admin__field">
+        <label class="admin__field-label">Default Tender Type</label>
+        <div class="admin__field-control">
+            <select class="admin__control-select"
+                    value="<?php echo $model->getDefaultTender() ?>"
+                    name="DefaultTender" <?php if ($tenders == null) {
+                echo 'disabled';
+            } else {
+                echo '';
+            } ?>>
+                <?php if (!empty($tenders) && is_array($tenders)) foreach ($tenders as $tender) {
+                    $selected = ($model->getDefaultTender() == $tender->Id)
+                        ? 'selected="selected"' : '';
+                    if (!empty($tender->Id)) {
+                        echo '<option ' . $selected . '  value="' . $tender->Id . '">' . $tender->Name . '</option>';
+                    }
+                } ?>
+            </select>
+        </div>
+    </div>
+    <div class="admin__field magento_default_tax">
+        <label class="admin__field-label">Magento Default Tax Class</label>
+        <div class="admin__field-control">
+            <select class="admin__control-select magento_default_tax"
+                    value="<?php echo $model->getSyncDirection() ?>"
+                    name="DefaultMagentoTax">
+                <?php foreach ($magentoTaxClasses as $index => $magentoClass) {
+                    $selected = ($model->getDefaultMagentoTaxClass() == $magentoClass["value"])
+                        ? 'selected="selected"' : '';
+                    echo '<option ' . $selected . '  value="' . $magentoClass["value"] . '">' . $magentoClass["label"] . '</option>';
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+    <div class="admin__field eposnow_default_tax">
+        <label class="admin__field-label">Eposnow Default Tax Class</label>
+        <div class="admin__field-control">
+            <select class="admin__control-select eposnow_default_tax"
+                    value="<?php echo $model->getSyncDirection() ?>"
+                    name="DefaultEposnowTax">
+                <?php if (is_array($eposTaxRates) && !empty($eposTaxRates)) {
+                    foreach ($eposTaxRates as $eposIndex => $tax) {
+                        $selected = ($model->getDefaultEposnowTaxClass() == $tax->Id)
+                            ? 'selected="selected"' : '';
+                        echo '<option ' . $selected . '  value="' . $tax->Id . '">' . $tax->Name . '</option>';
+                    }
+                }
+                ?>
+            </select>
+        </div>
+    </div>
+</fieldset>

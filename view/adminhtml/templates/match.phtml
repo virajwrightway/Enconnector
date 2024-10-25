@@ -1,0 +1,61 @@
+<?php
+/**
+ * @var Configuration $block
+ */
+
+use Wrightwaydigital\Enconnector\Block\Configuration;
+
+$model = $block->getConfiguration();
+$license = $block->getLicense();
+$eposTaxRates = $block->getEposnowTaxRates();
+$magentoTaxClasses = $block->getMagentoTaxClasses();
+$matchedTaxes = $block->getMatchedTaxes();
+$version = '1.1';
+?>
+
+<div class="admin__field">
+
+    <div class="admin__field" style="margin-bottom: 20px">
+        <label class="admin__field-label">Tax Class Matching</label>
+    </div>
+
+    <table class="table" style="margin: 50px">
+        <thead>
+        <tr>
+            <th>Magento Tax Class</th>
+            <th>Epos Now Tax Class</th>
+        </tr>
+        </thead>
+        <tbody>
+        <?php
+        foreach ($magentoTaxClasses as $index => $magentoClass) {
+            $eposTaxSelected = 0;
+            foreach ($matchedTaxes as $key => $value) {
+                if ($magentoClass["value"] == $value['magento_tax_id']) {
+                    $eposTaxSelected = $value['eposnow_tax_id'];
+                }
+            }
+            echo '<tr>';
+            echo '<td>';
+            echo '<select  name="magento_tax[' . $block->getEscaper()->escapeHtmlAttr($index) . ']" >';
+            $label = $magentoClass["label"];
+            echo '<option value="' . $block->getEscaper()->escapeHtmlAttr($magentoClass["value"]) . '">' . $block->getEscaper()->escapeHtmlAttr($label) . '</option>';
+            echo '</select>';
+            echo '</td>';
+            echo '<td>';
+            echo '<select name="eposnow_tax[' . $block->getEscaper()->escapeHtmlAttr($index) . ']" class="eposnow-select" value="' . $block->getEscaper()->escapeHtmlAttr($eposTaxSelected) . '">';
+            echo '<option value="0">select</option>';
+            if (is_array($eposTaxRates) && !empty($eposTaxRates)) {
+                foreach ($eposTaxRates as $eposIndex => $tax) {
+                    $isSelected = $tax->Id == $eposTaxSelected ? 'selected' : '';
+                    echo '<option value="' . $block->getEscaper()->escapeHtmlAttr($tax->Id) . '" ' . $block->getEscaper()->escapeHtmlAttr($isSelected) . '>' . $block->getEscaper()->escapeHtmlAttr($tax->Name) . '</option>';
+                }
+            }
+            echo '</select>';
+            echo '</td>';
+            echo '</tr>';
+        }
+        ?>
+        </tbody>
+    </table>
+</div>
