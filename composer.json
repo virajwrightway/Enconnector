@@ -1,5 +1,5 @@
 {
-    "name": "wrightwaydigitalltd/enconnector",
+    "name": "wrightwaydigital/enconnector",
     "description": "Synchronises data between Epos   Now and Magento",
     "type": "magento2-module",
     "version": "2.0.0",
