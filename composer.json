@@ -13,13 +13,12 @@
         "files": [ "registration.php" ],
         "psr-4": {
             "Wrightwaydigital\\Enconnector\\": ""
-        },
-		
-    "extra": {
+        }
+    },
+	"extra": {
         "branch-alias": {
             "master": "wrightwaydigital/enconnector"
         }
-    }
     }
 }
 
