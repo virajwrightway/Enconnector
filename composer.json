@@ -17,7 +17,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "2.0.x-dev"
+            "wrightwaydigital/enconnector": "2.0.x-dev"
         }
     }
 }
