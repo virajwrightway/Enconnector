@@ -1,6 +1,6 @@
 {
     "name": "wrightwaydigital/enconnector",
-    "description": "Synchronises data between Epos   Now and Magento",
+    "description": "Synchronises data between Epos Now and Magento",
     "type": "magento2-module",
     "version": "2.0.0",
     "license": [
@@ -10,15 +10,14 @@
         "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0"
     },
     "autoload": {
-        "files": [ "registration.php" ],
+        "files": ["registration.php"],
         "psr-4": {
             "Wrightwaydigital\\Enconnector\\": ""
         }
     },
-	"extra": {
+    "extra": {
         "branch-alias": {
-            "master-dev": "wrightwaydigital/enconnector"
+            "dev-master": "2.0.x-dev"
         }
     }
 }
-
