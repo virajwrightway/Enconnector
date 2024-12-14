@@ -10,9 +10,7 @@
         "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0"
     },
   "extra": {
-    "installer-paths": {
-      "wrightwaydigital/enconnector/": ["wrightwaydigital/enconnector"]
-    }
+    "installer-name": "wrightwaydigital",
   },
     "autoload": {
         "files": ["registration.php"],
