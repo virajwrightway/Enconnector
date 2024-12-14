@@ -19,10 +19,5 @@
         "psr-4": {
             "Wrightwaydigital\\Enconnector\\": ""
         }
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "2.0.x-dev"
-        }
     }
 }
