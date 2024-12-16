@@ -1,7 +1,7 @@
 {
   "name": "wrightwaydigital/enconnector",
   "description": "Synchronizes data between Epos Now and Magento",
-  "type": "magento2-module",
+  "type": "magento-library",
   "version": "2.0.0",
   "license": [
     "proprietary"
