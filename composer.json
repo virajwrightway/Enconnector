@@ -12,17 +12,26 @@
    "composer/installers": "~1.0"
     },
   "extra": {
+<<<<<<< HEAD
     "installer-paths": {
       "vendor/wrighwaydigital/": ["wrightwaydigital/enconnector"]
     }
+=======
+    "installer-name": "wrightwaydigital",
+>>>>>>> 72dbbc122ddd0972a1ef6fe286b0c711c4c7eb4e
   },
     "autoload": {
         "files": ["registration.php"],
         "psr-4": {
             "Wrightwaydigital\\Enconnector\\": ""
         }
+<<<<<<< HEAD
     },
 	
 	
 	
   }
+=======
+    }
+}
+>>>>>>> 72dbbc122ddd0972a1ef6fe286b0c711c4c7eb4e
