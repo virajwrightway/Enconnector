@@ -20,6 +20,7 @@
     "installer-name": "wrightwaydigital",
 
   },
+  
     "autoload": {
         "files": ["registration.php"],
         "psr-4": {
