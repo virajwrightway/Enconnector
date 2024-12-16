@@ -16,6 +16,7 @@
       "app/code/wrightwaydigital/enconnector/": ["wrightwaydigital/enconnector"]
     }
   },
+  
   "autoload": {
     "files": ["registration.php"],
     "psr-4": {
