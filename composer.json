@@ -17,6 +17,14 @@
             "app/code/Wrightwaydigital/Enconnector/": ["wrightwaydigital/enconnector"]
         }
     },
+	"scripts": {
+    "post-install-cmd": [
+        "php bin/magento setup:upgrade"
+    ],
+    "post-update-cmd": [
+        "php bin/magento setup:upgrade"
+    ]
+},
     "autoload": {
         "files": ["registration.php"],
         "psr-4": {
