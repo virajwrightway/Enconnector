@@ -11,10 +11,11 @@
 		"magento/magento-composer-installer": "*",
    "composer/installers": "~1.0"
     },
+	
   "extra": {
 
     "installer-paths": {
-      "vendor/wrighwaydigital/": ["wrightwaydigital/enconnector"]
+      "vendor/test/": ["wrightwaydigital/enconnector"]
     }
 
     "installer-name": "wrightwaydigital",
