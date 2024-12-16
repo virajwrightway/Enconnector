@@ -13,7 +13,7 @@
     },
   "extra": {
     "installer-paths": {
-      "wrightwaydigital/enconnector/": ["wrightwaydigital/enconnector"]
+      "vendor/wrighwaydigital/": ["wrightwaydigital/enconnector"]
     }
   },
     "autoload": {
@@ -22,9 +22,4 @@
             "Wrightwaydigital\\Enconnector\\": ""
         }
     },
-    "extra": {
-   "installer-paths": {
-      "vendor/wrighwaydigital/": ["wrightwaydigital/enconnector"]
-   }
- }
-}
+  }
