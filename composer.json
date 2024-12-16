@@ -8,15 +8,13 @@
     ],
     "require": {
         "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
-        "magento/magento-composer-installer": "*"
+        "magento/magento-composer-installer": "*",
+        "composer/installers": "~1.0"
     },
     "extra": {
-        "map": [
-            [
-                "*",
-                "Wrightwaydigital/Enconnector"
-            ]
-        ]
+        "installer-paths": {
+            "app/custom/Wrightwaydigital/Enconnector/": ["wrightwaydigital/enconnector"]
+        }
     },
     "autoload": {
         "files": ["registration.php"],
