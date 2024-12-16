@@ -16,7 +16,7 @@
 
     "installer-paths": {
       "vendor/test/": ["wrightwaydigital/enconnector"]
-    }
+    },
 
     "installer-name": "wrightwaydigital",
   },
