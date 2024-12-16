@@ -12,6 +12,7 @@
         "composer/installers": "~1.0"
     },
     "extra": {
+		 "installer-types": ["magento-library"],
         "installer-paths": {
             "app/code/Wrightwaydigital/Enconnector/": ["wrightwaydigital/enconnector"]
         }
