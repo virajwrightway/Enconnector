@@ -19,7 +19,6 @@
     }
 
     "installer-name": "wrightwaydigital",
-
   },
   
     "autoload": {
@@ -29,11 +28,8 @@
         }
 
     },
-	
-	
-	
+		
   }
+    
 
-    }
-}
 
