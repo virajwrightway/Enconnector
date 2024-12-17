@@ -14,7 +14,8 @@
   "require": {
     "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
     "magento/framework": "^103.0",
-    "magento/magento-composer-installer": "*"
+    "magento/magento-composer-installer": "*",
+   "composer/installers": "~1.0"
   },
   "autoload": {
     "files": ["registration.php"],
