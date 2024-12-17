@@ -12,10 +12,12 @@
     "magento/magento-composer-installer": "*"
   },
   "extra": {
-    "map": [
-      ["*", "app/code/Wrightwaydigital/Enconnector"]
-    ]
-  },
+    "installer-paths": {
+        "app/code/Wrightwaydigital/Enconnector/": [
+            "wrightwaydigital/enconnector"
+        ]
+    }
+},
   "autoload": {
     "files": ["registration.php"],
     "psr-4": {
