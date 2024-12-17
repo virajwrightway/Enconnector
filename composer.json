@@ -7,9 +7,9 @@
     "proprietary"
   ],
   "extra": {
-    "map": [
-      ["*", "app/code/Wrightwaydigital/Enconnector"]
-    ]
+    "installer-paths": {
+      "app/code/Wrightwaydigital/Enconnector/": ["wrightwaydigital/enconnector"]
+    }
   },
   "require": {
     "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
