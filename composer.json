@@ -6,10 +6,10 @@
   "license": [
     "proprietary"
   ],
-  "extra": {
-    "map": [
-      ["*", "/"]
-    ]
+   "extra": {
+    "installer-paths": {
+      "app/code/wrightwaydigital/enconnector/": ["wrightwaydigital/enconnector"]
+    }
   },
   "require": {
     "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
@@ -21,13 +21,5 @@
     "psr-4": {
       "Wrightwaydigital\\Enconnector\\": ""
     }
-  },
-  "scripts": {
-    "post-install-cmd": [
-      "rm -rf /vendor/wrightwaydigitalltd"
-    ],
-    "post-update-cmd": [
-      "rm -rf /vendor/wrightwaydigitalltd"
-    ]
   }
 }
