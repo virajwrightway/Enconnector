@@ -14,7 +14,7 @@
   "extra": {
     "installer-paths": {
         "app/code/Wrightwaydigital/Enconnector/": [
-            "wrightwaydigitalltd/enconnector"
+            "wrightwaydigitalltd/enconnector:dev-master"
         ]
     }
 },
