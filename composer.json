@@ -6,19 +6,16 @@
   "license": [
     "proprietary"
   ],
+  "extra": {
+    "map": [
+      ["*", "app/code/Wrightwaydigital/Enconnector"]
+    ]
+  },
   "require": {
     "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
     "magento/framework": "^103.0",
     "magento/magento-composer-installer": "*"
   },
-  "extra": {
-	  "magento-force": "override",
-    "installer-paths": {
-        "app/code/Wrightwaydigital/Enconnector/": [
-            "wrightwaydigitalltd/enconnector:dev-master"
-        ]
-    }
-},
   "autoload": {
     "files": ["registration.php"],
     "psr-4": {
