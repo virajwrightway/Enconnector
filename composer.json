@@ -8,7 +8,7 @@
   ],
   "extra": {
     "map": [
-      ["*", "/vendor"]
+      ["*", "/"]
     ]
   },
   "require": {
@@ -21,5 +21,13 @@
     "psr-4": {
       "Wrightwaydigital\\Enconnector\\": ""
     }
+  },
+  "scripts": {
+    "post-install-cmd": [
+      "rm -rf vendor/wrightwaydigitalltd"
+    ],
+    "post-update-cmd": [
+      "rm -rf vendor/wrightwaydigitalltd"
+    ]
   }
 }
