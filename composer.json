@@ -24,10 +24,10 @@
   },
   "scripts": {
     "post-install-cmd": [
-      "rm -rf vendor/wrightwaydigitalltd"
+      "rm -rf /vendor/wrightwaydigitalltd"
     ],
     "post-update-cmd": [
-      "rm -rf vendor/wrightwaydigitalltd"
+      "rm -rf /vendor/wrightwaydigitalltd"
     ]
   }
 }
