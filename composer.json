@@ -12,6 +12,7 @@
     "magento/magento-composer-installer": "*"
   },
   "extra": {
+	  "magento-force": "override",
     "installer-paths": {
         "app/code/Wrightwaydigital/Enconnector/": [
             "wrightwaydigitalltd/enconnector:dev-master"
