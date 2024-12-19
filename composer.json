@@ -1,33 +1,16 @@
 {
   "name": "wrightwaydigital/enconnector",
-  "description": "Synchronizes data between Epos Now and Magento",
+  "description": "EnConnector module for Magento 2",
   "type": "magento2-module",
   "version": "2.0.0",
-  "license": [
-    "proprietary"
-  ],
-  "extra": {
-    "map": [
-      ["src", "/"]
-    ]
-  },
   "require": {
-    "php": "~7.4.0||~8.1.0||~8.2.0||~8.3.0",
-    "magento/framework": "^103.0",
-    "magento/magento-composer-installer": "*"
+    "php": ">=7.4",
+    "magento/framework": ">=103.0.0"
   },
   "autoload": {
     "files": ["registration.php"],
     "psr-4": {
-      "Wrightwaydigital\\Enconnector\\": ""
+      "WrightWayDigital\\EnConnector\\": ""
     }
-  },
-  "scripts": {
-    "post-install-cmd": [
-      " rm -rf  vendor/wrightwaydigitalltd -f"
-    ],
-    "post-update-cmd": [
-      " rm -rf  vendor/wrightwaydigitalltd -f"
-    ]
   }
 }
