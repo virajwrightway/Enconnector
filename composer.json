@@ -8,7 +8,7 @@
   ],
   "extra": {
     "map": [
-      ["/wrightwaydigital/enconnector", "/"]
+      ["*", "app/code/Wrightwaydigital/Enconnector"]
     ]
   },
   "require": {
