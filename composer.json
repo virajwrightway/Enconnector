@@ -8,7 +8,7 @@
   ],
   "extra": {
     "map": [
-      ["*", "/"]
+      ["/wrightwaydigital/enconnector", "/"]
     ]
   },
   "require": {
@@ -22,12 +22,9 @@
       "Wrightwaydigital\\Enconnector\\": ""
     }
   },
-  "scripts": {
+ "scripts": {
     "post-install-cmd": [
-      "@remove-wrightwaydigital"
-    ],
-    "remove-wrightwaydigital": [
-      "php -r \"if (is_dir('vendor/wrightwaydigitalltd')) { exec('rm -rf vendor/wrightwaydigitalltd'); echo 'Removed vendor/wrightwaydigitalltd folder.' . PHP_EOL; }\""
+      "php remove-folder.php"
     ]
   }
 }
