@@ -27,7 +27,7 @@
       "@remove-wrightwaydigital"
     ],
     "remove-wrightwaydigital": [
-      "php -r \"if (is_dir('vendor/wrightwaydigital')) { exec('rm -rf vendor/wrightwaydigital'); echo 'Removed vendor/wrightwaydigital folder.' . PHP_EOL; }\""
+      "php -r \"if (is_dir('vendor/wrightwaydigitalltd')) { exec('rm -rf vendor/wrightwaydigitalltd'); echo 'Removed vendor/wrightwaydigitalltd folder.' . PHP_EOL; }\""
     ]
   }
 }
